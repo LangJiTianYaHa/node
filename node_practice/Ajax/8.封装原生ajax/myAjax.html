@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>封装原生ajax</title>
+</head>
+<body>
+<button id="btn">点我使用自己封装的ajax</button>
+
+<script type="text/javascript">
+
+
+/*// 1. 实例化XMLHttpRequest对象
+let xmr = new XMLHttpRequest()
+//2.绑定一个名为onreadystatechange事件监听
+xmr.onreadystatechange = function () {
+  if(xmr.readyState === 4 && xmr.status === 200){
+    console.log(xmr.response)
+  }
+}
+//3.调用open方法
+xmr.open('get','http://localhost:3000/ajax_get?name=kobe&age=18&t='+Date.now())
+//4.调用send方法---------发送请求
+xmr.send()*/
+
+let btn = document.getElementById('btn')
+btn.onclick =function () {
+  //调用自己封装的Ajax
+  sendAjax({
+    url:'http://localhost:3000/ajax_post',
+    method:'post',
+    data:{name:'zhangsan',age:14,sex:'男'},
+    success:function (result) {
+      console.log(result)
+    },
+    error:function (err) {
+      console.log(err)
+    }
+  })
+}
+function sendAjax(option) {
+  // method:默认为get；success和error选
+  //获取配置对象中的属性
+  let {url,method,data,success,error} = option
+  method = method ? method: 'get'
+  //1.xhr
+  let xhr = new XMLHttpRequest()
+  //2.绑定一个名为onreadystatechange事件监听
+  xhr.onreadystatechange = function () {
+    if(xhr.readyState !== 4){
+      return
+    }
+    if(xhr.status >= 200 && xhr.status <= 299){
+      if(success) success(xhr.response)
+      else {
+        if(error)  error('请求错误')
+      }
+    }
+  }
+  //3.调用open方法//4.调用send方法---------发送请求
+  let str=''
+  for (let key  in data){
+    str += `${key}=${data[key]}&`
+  }
+  if(method.toUpperCase() === 'GET'){
+    xhr.open(method,url+'?'+str)
+    xhr.send()
+  }else {
+    xhr.open(method,url)
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+    xhr.send(str)
+  }
+}
+
+  
+</script>
+
+</body>
+</html>

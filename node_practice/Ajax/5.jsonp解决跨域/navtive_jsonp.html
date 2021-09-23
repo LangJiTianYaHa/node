@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<button id="btn">点我</button>
+<script type="text/javascript">
+  
+  /*
+  * 关于jsonp解决跨域
+  *     1.原理：利用了script标签发请求不受同源策略的限制。所以不会产生跨域问题
+  *     2.套路：动态构建script节点，利用节点的src属性，发出get请求，从而绕开ajax引擎
+  *     3.弊端：(1).只能解决get请求跨域的问题。(2).后端工程师必须配合前端
+  *     4.备注：有这样一种感觉：前端定义函数，后端“调用”。后端返回的数据，前端以js格式解析，并且运行。
+  * */
+
+  /*let btn = document.getElementById('btn')
+  btn.onclick = function () {
+    // 1.创建一个script标签
+    let script = document.createElement('script')
+    //2.设置回调函数
+    window.getData = function (data) {
+      console.log(data)
+    }
+    //3.设置script 标签src 属性，填写跨域请求的地址
+    script.src = 'http://localhost:3000/test?callback=getData'
+    //4. 将script标签添加到body中生效
+    document.body.appendChild(script);
+  }*/
+
+  let btn = document.getElementById('btn')
+  btn.onclick = function () {
+    //创建一个script标签
+    let script = document.createElement('script')
+    //设置 回调函数
+    window.getData = function (data) {
+      console.log(data)
+    }
+    //设置script标签的src属性
+    script.src = 'http://localhost:3000/test?callback=getData'
+    //将script 标签添加到body中生效
+    document.body.appendChild(script)
+  }
+  
+</script>
+
+</body>
+</html>
